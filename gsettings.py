@@ -76,7 +76,7 @@ def run_module():
     try:
       # set value
       result['changed'] = True
-    except Exception as e
+    except Exception as e:
       module.fail_json(msg=str(e), **result)
 
   module.exit_json(**result)
