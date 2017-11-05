@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -eou pipefail
+
+function log() {
+  echo "**** $@"
+}
+
+hash pip || (log "Please install pip!"; exit 1)
+
+pip show virtualenv &> /dev/null || (
+  log "Installing virtualenv python module"
+  sudo pip -H install virtualenv
+)
+
+[ ! -d ../ansible ] && (
+  log "Cloning ansible"
+  cd .. && git clone https://github.com/ansible/ansible.git
+)
+
+[ ! -d ../ansible/env ] && (
+  log "Creating virtual environment"
+  cd ../ansible && virtualenv venv
+)
+
+cd ../ansible
+
+log "Installing development requirements"
+pip install -r requirements.txt
